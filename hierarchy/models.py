@@ -68,7 +68,7 @@ class MPTTGroup(MPTTModel):
 
     def save(self, *args, **kwargs):
         """
-
+        Ensure that clean method is always called on save.
         """
         self.clean()
         super().save(*args, **kwargs)
