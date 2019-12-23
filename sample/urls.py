@@ -7,7 +7,7 @@ from hierarchy.views import MPTTGroupViewSet
 
 
 router = routers.DefaultRouter()
-router.register('mpttgroup', MPTTGroupViewSet)
+router.register('hierarchy', MPTTGroupViewSet)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
