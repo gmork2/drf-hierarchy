@@ -1,3 +1,9 @@
-from django.shortcuts import render
+from rest_framework import viewsets
 
-# Create your views here.
+from .models import MPTTGroup
+from .serializers import MPTTGroupSerializer
+
+
+class MPTTGroupViewSet(viewsets.ModelViewSet):
+    queryset = MPTTGroup.objects.all()
+    serializer_class = MPTTGroupSerializer
