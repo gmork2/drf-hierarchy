@@ -5,5 +5,5 @@ from .serializers import MPTTGroupSerializer
 
 
 class MPTTGroupViewSet(viewsets.ModelViewSet):
-    queryset = MPTTGroup.objects.all()
+    queryset = MPTTGroup.objects.filter(parent=None)
     serializer_class = MPTTGroupSerializer
