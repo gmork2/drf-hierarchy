@@ -1,5 +1,4 @@
 from django.core.exceptions import ObjectDoesNotExist
-from django.contrib.auth.models import Permission
 
 from rest_framework import serializers
 
