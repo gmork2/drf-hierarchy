@@ -1,0 +1,8 @@
+
+site_name: drf-hierarchy
+repo_url: https://github.com/gmork2/drf-hierarchy
+theme: readthedocs
+nav:
+  - Home: 'index.md'
+
+dev_addr: !!python/object/apply:os.getenv ["MKDOCS_DEV_ADDR"]
