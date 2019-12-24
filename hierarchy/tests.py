@@ -5,6 +5,7 @@ from django.test import TestCase
 from django.contrib.auth.models import Group, Permission
 
 from .models import MPTTGroup
+from .settings import MPTT_METHODS_LIST
 
 
 class MPTTGroupTestCase(TestCase):
@@ -18,6 +19,13 @@ class MPTTGroupTestCase(TestCase):
 
         self.root = MPTTGroup(group=Group.objects.get(name=self.group_names[0]))
         self.root.save()
+
+    def test_mptt_methods_list(self):
+        """
+        Check if all mptt methods are available.
+        """
+        for method in MPTT_METHODS_LIST:
+            self.assertTrue(hasattr(self.root, method))
 
     def test_circular_reference(self):
         """
