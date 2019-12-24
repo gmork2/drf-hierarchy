@@ -82,8 +82,13 @@ class MPTTGroup(MPTTModel):
         """
 
         """
+        if self.parent is not None and \
+                self.parent.max_children <= self.parent.get_children().count():
+            raise ValidationError(_("This node has the maximum number of children "
+                                    "(max_children={})".format(self.parent.max_children)))
         if self.id:
             descendant_ids = self.get_descendants().values_list('id', flat=True)
+
             if self.parent and self.parent.id in descendant_ids:
                 raise ValidationError(_("You can't set the parent of the "
                                         "item to a descendant."))
