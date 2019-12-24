@@ -1,3 +1,5 @@
+from typing import Set
+
 from django.db import models
 from django.contrib.auth.models import Group
 from django.utils.translation import ugettext_lazy as _
@@ -8,6 +10,8 @@ from mptt.models import MPTTModel
 from mptt.fields import TreeForeignKey
 from mptt.managers import TreeManager
 
+from . import settings as local_settings
+
 
 def get_sentinel_tree():
     """
@@ -16,6 +20,25 @@ def get_sentinel_tree():
     :return:
     """
     return Group.objects.first()
+
+
+def get_permissions(
+        root: 'MPTTGroup', method: str = 'get_descendants',
+        **kwargs) -> Set[int]:
+    """
+
+    :param root:
+    :param method:
+    :param kwargs:
+    :return:
+    """
+    perm_ids = set(root.group.permissions.values_list('id', flat=True))
+
+    for node in getattr(root, method)(**kwargs):
+        query = node.group.permissions.filter(group__hierarchy__inheritable=True)
+        perm_ids.update(query.values_list('id', flat=True))
+
+    return perm_ids
 
 
 class MPTTGroup(MPTTModel):
@@ -75,11 +98,14 @@ class MPTTGroup(MPTTModel):
         self.clean()
         super().save(*args, **kwargs)
 
+    @property
+    def permissions(self, method: str = local_settings.HIERARCHY_MPTT_METHOD) -> Set[int]:
+        perm_ids = get_permissions(self, method)
+        return perm_ids
+
     class Meta:
         unique_together = ('parent', 'group')
         ordering = ('tree_id', 'lft')
 
     class MPTTMeta:
         order_insertion_by = 'group'
-
-
