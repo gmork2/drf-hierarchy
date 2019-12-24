@@ -16,7 +16,7 @@ class MPTTGroupAdmin(admin.ModelAdmin):
     search_fields = ('group',)
     fieldsets = (
         (None, {
-            'fields': ('parent', 'group',)
+            'fields': ('parent', 'group', 'max_children', 'inheritable')
         }),
     )
 
