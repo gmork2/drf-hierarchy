@@ -45,6 +45,8 @@ class MPTTGroup(MPTTModel):
         related_query_name="hierarchy",
     )
 
+    inheritable = models.BooleanField(default=True)
+    max_children = models.PositiveIntegerField(null=True, blank=True)
     tree = TreeManager()
 
     def __str__(self):
