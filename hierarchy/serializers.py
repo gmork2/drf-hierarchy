@@ -1,4 +1,5 @@
 from django.core.exceptions import ObjectDoesNotExist
+from django.contrib.auth.models import Permission
 
 from rest_framework import serializers
 
@@ -34,4 +35,4 @@ class MPTTGroupSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = MPTTGroup
-        fields = ("id", "group", "parent", "children")
+        fields = ("id", "group", "parent", "children", "permissions")
