@@ -33,13 +33,13 @@ class MPTTGroupAdmin(DraggableMPTTAdmin):
     )
     list_display_links = ('indented_title',)
 
-    def _level(self, instance):
+    def _level(self, instance: MPTTGroup) -> int:
         lvl = instance.parent.level + 1 if instance.parent else instance._mpttfield('level')
         return lvl
 
     _level.short_description = _('level')
 
-    def indented_title(self, instance):
+    def indented_title(self, instance: MPTTGroup) -> str:
         lvl = self._level(instance)
         return format_html(
             '<div style="text-indent:{}px">{}</div>',
