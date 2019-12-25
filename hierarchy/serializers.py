@@ -34,4 +34,7 @@ class MPTTGroupSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = MPTTGroup
-        fields = ("id", "group", "parent", "children", "permissions")
+        fields = (
+            'id', 'group', 'parent', 'children', 'permissions', 'inheritable',
+            'max_children'
+        )
