@@ -73,7 +73,7 @@ class MPTTGroup(MPTTModel):
         'Provide a value to HIERARCHY_MPTT_METHOD to establish inheritance criteria.'
     ))
     max_children = models.PositiveIntegerField(null=True, blank=True, help_text=_(
-        'Maximum number of children for current node'
+        'Maximum number of children for this node'
     ))
     tree = TreeManager()
 
