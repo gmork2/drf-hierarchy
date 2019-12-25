@@ -22,7 +22,8 @@ class MPTTGroupAdmin(DraggableMPTTAdmin):
         'tree_actions',
         'indented_title',
         'inheritable',
-        'max_children'
+        'max_children',
+        '_level'
     )
     search_fields = ('group',)
     fieldsets = (
@@ -32,10 +33,17 @@ class MPTTGroupAdmin(DraggableMPTTAdmin):
     )
     list_display_links = ('indented_title',)
 
+    def _level(self, instance):
+        lvl = instance.parent.level + 1 if instance.parent else instance._mpttfield('level')
+        return lvl
+
+    _level.short_description = _('level')
+
     def indented_title(self, instance):
+        lvl = self._level(instance)
         return format_html(
             '<div style="text-indent:{}px">{}</div>',
-            instance._mpttfield('level') * self.mptt_level_indent,
+            lvl * self.mptt_level_indent,
             instance.group.name,
         )
 
