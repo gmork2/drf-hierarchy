@@ -1,6 +1,7 @@
 from django.contrib import admin
 from django import forms
 from django.utils.translation import gettext as _
+from django.utils.html import format_html
 
 from mptt.admin import DraggableMPTTAdmin
 
@@ -32,7 +33,6 @@ class MPTTGroupAdmin(DraggableMPTTAdmin):
     list_display_links = ('indented_title',)
 
     def indented_title(self, instance):
-        from django.utils.html import format_html
         return format_html(
             '<div style="text-indent:{}px">{}</div>',
             instance._mpttfield('level') * self.mptt_level_indent,
