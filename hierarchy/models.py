@@ -87,7 +87,7 @@ class MPTTGroup(MPTTModel):
         """
 
         """
-        if self.parent is not None and \
+        if self.parent and self.parent.max_children is not None and \
                 self.parent.max_children <= self.parent.get_children().count():
             raise ValidationError(_("This node has the maximum number of children "
                                     "(max_children={})".format(self.parent.max_children)))
