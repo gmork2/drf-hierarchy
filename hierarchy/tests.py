@@ -27,6 +27,15 @@ class MPTTGroupTestCase(TestCase):
         for method in MPTT_METHODS_LIST:
             self.assertTrue(hasattr(self.root, method))
 
+    def test_set_parent(self):
+        """
+
+        """
+        local = Group.objects.get(name=self.group_names[3])
+        node = MPTTGroup.objects.create(group=local, parent=self.root)
+
+        self.assertIs(node.parent, self.root)
+
     def test_circular_reference(self):
         """
         Prevent simple circular reference.
@@ -63,3 +72,4 @@ class MPTTGroupTestCase(TestCase):
         node.parent = node
 
         self.assertRaises(ValidationError, node.clean)
+
