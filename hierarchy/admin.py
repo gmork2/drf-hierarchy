@@ -1,6 +1,8 @@
 from django.contrib import admin
 from django import forms
 
+from mptt.admin import DraggableMPTTAdmin
+
 from .models import MPTTGroup
 
 
@@ -10,9 +12,14 @@ class MPTTGroupAdminForm(forms.ModelForm):
         fields = '__all__'
 
 
-class MPTTGroupAdmin(admin.ModelAdmin):
+class MPTTGroupAdmin(DraggableMPTTAdmin):
+    mptt_level_indent = 20
     form = MPTTGroupAdminForm
-    list_display = ('group',)
+    list_display = (
+        'tree_actions',
+        'indented_title',
+        'group',
+    )
     search_fields = ('group',)
     fieldsets = (
         (None, {
