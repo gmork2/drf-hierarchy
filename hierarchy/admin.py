@@ -14,6 +14,7 @@ class MPTTGroupAdminForm(forms.ModelForm):
 
 class MPTTGroupAdmin(DraggableMPTTAdmin):
     mptt_level_indent = 20
+    expand_tree_by_default = True
     form = MPTTGroupAdminForm
     list_display = (
         'tree_actions',
