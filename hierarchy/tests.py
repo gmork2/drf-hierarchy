@@ -37,6 +37,23 @@ class MPTTGroupTestCase(TestCase):
 
         self.assertRaises(ValidationError, self.root.clean)
 
+    def test_multi_level_circular_reference(self):
+        """
+        Prevent multi-level circular reference.
+
+        :return:
+        """
+        node = None
+        for name in self.group_names[1:]:
+            group = Group.objects.get(name=name)
+            if node is None:
+                node = MPTTGroup.objects.create(group=group, parent=self.root)
+            else:
+                node = MPTTGroup.objects.create(group=group, parent=node)
+        self.root.parent = node
+
+        self.assertRaises(ValidationError, self.root.clean)
+
     def test_set_parent_itself(self):
         """
         Prevent set parent to itself.
