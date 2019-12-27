@@ -4,8 +4,8 @@ from django.core.exceptions import ValidationError
 from django.test import TestCase
 from django.contrib.auth.models import Group, Permission
 
-from .models import MPTTGroup
-from .settings import MPTT_METHODS_LIST
+from hierarchy.models import MPTTGroup
+from hierarchy.settings import MPTT_METHODS_LIST
 
 
 class MPTTGroupTestCase(TestCase):
