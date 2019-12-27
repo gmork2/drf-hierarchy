@@ -23,7 +23,8 @@ class MPTTGroupAdmin(DraggableMPTTAdmin):
         'indented_title',
         'inheritable',
         'max_children',
-        '_level'
+        '_level',
+        'permissions'
     )
     search_fields = ('group',)
     fieldsets = (
@@ -48,6 +49,11 @@ class MPTTGroupAdmin(DraggableMPTTAdmin):
         )
 
     indented_title.short_description = _('group')
+
+    def permissions(self, instance: MPTTGroup) -> str:
+        return ", ".join(instance.permissions.values_list('name', flat=True))
+
+    permissions.short_description = _('permissions')
 
 
 admin.site.register(MPTTGroup, MPTTGroupAdmin)
