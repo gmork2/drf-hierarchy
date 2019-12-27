@@ -1,7 +1,7 @@
 from typing import Set
 
 from django.db import models
-from django.contrib.auth.models import Group
+from django.contrib.auth.models import Group, Permission
 from django.utils.translation import ugettext_lazy as _
 from django.utils.encoding import force_text
 from django.core.exceptions import ValidationError
@@ -111,7 +111,7 @@ class MPTTGroup(MPTTModel):
     @property
     def permissions(self, method: str = local_settings.HIERARCHY_MPTT_METHOD) -> Set[int]:
         perm_ids = get_permissions(self, method)
-        return perm_ids
+        return Permission.objects.filter(id__in=perm_ids)
 
     class Meta:
         unique_together = ('parent', 'group')
