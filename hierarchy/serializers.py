@@ -1,8 +1,15 @@
 from django.core.exceptions import ObjectDoesNotExist
+from django.contrib.auth.models import Permission
 
 from rest_framework import serializers
 
 from .models import MPTTGroup
+
+
+class PermissionSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Permission
+        fields = '__all__'
 
 
 class RecursiveField(serializers.BaseSerializer):
@@ -31,6 +38,7 @@ class RecursiveField(serializers.BaseSerializer):
 
 class MPTTGroupSerializer(serializers.ModelSerializer):
     children = RecursiveField(many=True, required=False)
+    permissions = PermissionSerializer(many=True)
 
     class Meta:
         model = MPTTGroup
