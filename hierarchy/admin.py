@@ -51,7 +51,7 @@ class MPTTGroupAdmin(DraggableMPTTAdmin):
     indented_title.short_description = _('group')
 
     def permissions(self, instance: MPTTGroup) -> str:
-        return ", ".join(instance.permissions.values_list('name', flat=True))
+        return ", ".join(instance.permissions.values_list('codename', flat=True))
 
     permissions.short_description = _('permissions')
 
