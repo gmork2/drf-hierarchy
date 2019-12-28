@@ -34,7 +34,22 @@ class MPTTGroupTestCase(TestCase):
         local = Group.objects.get(name=self.group_names[3])
         node = MPTTGroup.objects.create(group=local, parent=self.root)
 
-        self.assertIs(node.parent, self.root)
+        self.assertEqual(node.parent, self.root)
+
+    def test_set_parent_with_max_children(self):
+        """
+
+        :return:
+        """
+        self.root.max_children = 1
+        self.root.save()
+        local = Group.objects.get(name=self.group_names[3])
+        usr = Group.objects.get(name=self.group_names[2])
+
+        MPTTGroup.objects.create(group=local, parent=self.root)
+        node = MPTTGroup(group=usr, parent=self.root)
+
+        self.assertRaises(ValidationError, node.clean)
 
     def test_circular_reference(self):
         """
