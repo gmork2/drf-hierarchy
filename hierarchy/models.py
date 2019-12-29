@@ -67,14 +67,22 @@ class MPTTGroup(MPTTModel):
         related_name="hierarchy_set",
         related_query_name="hierarchy",
     )
+    propagate = models.BooleanField(default=True)
+    inheritable = models.BooleanField(
+        default=True,
+        help_text=_(
+            'Set group permissions as inheritable for others nodes. '
+            'Provide a value to HIERARCHY_MPTT_METHOD to establish inheritance criteria.'
+        )
+    )
+    max_children = models.PositiveIntegerField(
+        null=True,
+        blank=True,
+        help_text=_(
+            'Maximum number of children for this node'
+        )
+    )
 
-    inheritable = models.BooleanField(default=True, help_text=_(
-        'Set group permissions as inheritable for others nodes. '
-        'Provide a value to HIERARCHY_MPTT_METHOD to establish inheritance criteria.'
-    ))
-    max_children = models.PositiveIntegerField(null=True, blank=True, help_text=_(
-        'Maximum number of children for this node'
-    ))
     tree = TreeManager()
 
     def __str__(self):
