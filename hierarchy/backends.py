@@ -8,6 +8,7 @@ class MPTTGroupBackend(BaseBackend):
     """
 
     """
+    # Todo: Set method result in cache
     def get_group_permissions(self, user_obj, obj=None):
         """
         Return a set of permission strings the user `user_obj` has from the
