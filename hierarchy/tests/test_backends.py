@@ -1,9 +1,8 @@
 from unittest import skip
-from typing import List
 
-from django.db.models import F, Q
+from django.db.models import F
 from django.test import TestCase, override_settings
-from django.contrib.auth.models import AnonymousUser, Group, Permission, User
+from django.contrib.auth.models import Group, Permission, User
 
 from hierarchy.models import MPTTGroup
 
