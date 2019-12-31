@@ -93,7 +93,9 @@ class MPTTGroup(MPTTModel):
 
     def clean(self):
         """
+        Validates model fields.
 
+        :return:
         """
         if self.parent and self.parent.max_children is not None and \
                 self.parent.max_children <= self.parent.get_children().count():
@@ -112,12 +114,22 @@ class MPTTGroup(MPTTModel):
     def save(self, *args, **kwargs):
         """
         Ensure that clean method is always called on save.
+
+        :param args:
+        :param kwargs:
+        :return:
         """
         self.clean()
         super().save(*args, **kwargs)
 
     @property
     def permissions(self, method: str = local_settings.HIERARCHY_MPTT_METHOD) -> Set[int]:
+        """
+        Property that returns group permissions as queryset.
+
+        :param method:
+        :return:
+        """
         perm_ids = get_permissions(self, method)
         return Permission.objects.filter(id__in=perm_ids)
 
