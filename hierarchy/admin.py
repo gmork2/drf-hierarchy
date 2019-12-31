@@ -23,7 +23,7 @@ class MPTTGroupAdmin(DraggableMPTTAdmin):
         'indented_title',
         'inheritable',
         'max_children',
-        '_level',
+        '_depth',
         'permissions'
     )
     search_fields = ('group',)
@@ -34,11 +34,12 @@ class MPTTGroupAdmin(DraggableMPTTAdmin):
     )
     list_display_links = ('indented_title',)
 
-    def _level(self, instance: MPTTGroup) -> int:
-        lvl = instance.parent.level + 1 if instance.parent else instance._mpttfield('level')
-        return lvl
+    def _depth(self, instance: MPTTGroup) -> int:
+        level = instance._mpttfield('level')
+        depth = instance.parent.level + 1 if instance.parent else level
+        return depth
 
-    _level.short_description = _('level')
+    _depth.short_description = _('level')
 
     def indented_title(self, instance: MPTTGroup) -> str:
         lvl = self._level(instance)
