@@ -84,5 +84,5 @@ class GroupPermissionTestCase(TestCase):
         permissions = self.user.get_group_permissions()
         perm_str = '.'.join([perm.app_label, perm.codename])
 
-        self.assertEqual(permissions, set([perm_str]))
+        self.assertEqual(permissions, {perm_str})
         self.assertTrue(self.user.has_perm(perm_str))
