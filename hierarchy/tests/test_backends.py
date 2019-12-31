@@ -22,7 +22,7 @@ def get_perm(codename: str) -> Permission:
 
 
 @override_settings(AUTHENTICATION_BACKENDS=['hierarchy.backends.MPTTGroupBackend'])
-class MPTTGroupBackendTestCase(TestCase):
+class GroupPermissionTestCase(TestCase):
     def setUp(self):
         """
 
