@@ -42,10 +42,10 @@ class MPTTGroupAdmin(DraggableMPTTAdmin):
     _depth.short_description = _('level')
 
     def indented_title(self, instance: MPTTGroup) -> str:
-        lvl = self._depth(instance)
+        depth = self._depth(instance)
         return format_html(
             '<div style="text-indent:{}px">{}</div>',
-            lvl * self.mptt_level_indent,
+            depth * self.mptt_level_indent,
             instance.group.name,
         )
 
