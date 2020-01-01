@@ -82,7 +82,7 @@ class MPTTGroup(MPTTModel):
             'Maximum number of children for this node'
         )
     )
-
+    active = models.BooleanField(default=True)
     tree = TreeManager()
 
     def __str__(self):
