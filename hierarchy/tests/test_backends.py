@@ -1,23 +1,9 @@
 from unittest import skip
 
-from django.db.models import F
 from django.test import TestCase, override_settings
 from django.contrib.auth.models import Group, Permission, User
 
 from hierarchy.models import MPTTGroup
-
-
-def get_perm(codename: str) -> Permission:
-    """
-
-    :param codename:
-    :return:
-    """
-    perm = Permission.objects.filter(codename=codename)
-    perm = perm.select_related('content_type')
-    perm = perm.annotate(app_label=F('content_type__app_label'))
-
-    return perm.first()
 
 
 @override_settings(AUTHENTICATION_BACKENDS=['hierarchy.backends.MPTTGroupBackend'])
@@ -75,14 +61,14 @@ class GroupPermissionTestCase(TestCase):
 
         :return:
         """
-        perm = get_perm('change_user')
+        perm = Permission.objects.first()
         self.node = MPTTGroup.objects.create(group=self.group, parent=self.root)
         self.group.permissions.add(perm)
 
         self.root.group.user_set.add(self.user)
 
         permissions = self.user.get_group_permissions()
-        perm_str = '.'.join([perm.app_label, perm.codename])
+        perm_str = '.'.join([perm.content_type.app_label, perm.codename])
 
         self.assertEqual(permissions, {perm_str})
         self.assertTrue(self.user.has_perm(perm_str))
