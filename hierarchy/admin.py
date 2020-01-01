@@ -23,8 +23,10 @@ class MPTTGroupAdmin(DraggableMPTTAdmin):
         'indented_title',
         'inheritable',
         'max_children',
+        'permissions',
         '_depth',
-        'permissions'
+        'level',
+        'propagate'
     )
     search_fields = ('group',)
     fieldsets = (
@@ -39,7 +41,7 @@ class MPTTGroupAdmin(DraggableMPTTAdmin):
         depth = instance.parent.level + 1 if instance.parent else level
         return depth
 
-    _depth.short_description = _('level')
+    _depth.short_description = _('depth')
 
     def indented_title(self, instance: MPTTGroup) -> str:
         depth = self._depth(instance)
