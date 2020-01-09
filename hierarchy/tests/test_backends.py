@@ -28,6 +28,21 @@ class GroupPermissionTestCase(TestCase):
         permissions = self.user.get_group_permissions()
         self.assertEqual(permissions, set())
 
+    def test_only_root_node_perms(self):
+        """
+
+        :return:
+        """
+        perm = Permission.objects.first()
+        self.group.permissions.add(perm)
+        self.root.group.user_set.add(self.user)
+
+        permissions = self.user.get_group_permissions()
+        perm_str = '.'.join([perm.content_type.app_label, perm.codename])
+
+        self.assertNotEqual(permissions, {perm_str})
+        self.assertFalse(self.user.has_perm(perm_str))
+
     def test_tree_without_users(self):
         """
 
