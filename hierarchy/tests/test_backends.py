@@ -77,9 +77,30 @@ class GroupPermissionTestCase(TestCase):
         :return:
         """
         perm = Permission.objects.first()
-        self.node = MPTTGroup.objects.create(group=self.group, parent=self.root)
+        MPTTGroup.objects.create(group=self.group, parent=self.root)
         self.group.permissions.add(perm)
 
+        self.root.group.user_set.add(self.user)
+
+        permissions = self.user.get_group_permissions()
+        perm_str = '.'.join([perm.content_type.app_label, perm.codename])
+
+        self.assertEqual(permissions, {perm_str})
+        self.assertTrue(self.user.has_perm(perm_str))
+
+    def test_multi_level_descendant_perms(self):
+        """
+
+        :return:
+        """
+        perm = Permission.objects.first()
+
+        MPTTGroup.objects.create(group=Group.objects.create(name='tmp'), parent=self.root)
+        dev = MPTTGroup.objects.create(group=Group.objects.create(name='dev'), parent=self.root)
+        sdc1 = MPTTGroup.objects.create(group=Group.objects.create(name='sdc1'), parent=dev)
+        MPTTGroup.objects.create(group=self.group, parent=sdc1)
+
+        self.group.permissions.add(perm)
         self.root.group.user_set.add(self.user)
 
         permissions = self.user.get_group_permissions()
