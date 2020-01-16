@@ -23,9 +23,11 @@ def get_sentinel_tree():
 
 
 def get_permissions(
-        root: 'MPTTGroup', method: str = 'get_descendants',
+        root: 'MPTTGroup',
+        method: str = local_settings.HIERARCHY_MPTT_METHOD,
         **kwargs) -> Set[int]:
     """
+    Verify the permissions according to a tree path method.
 
     :param root:
     :param method:
@@ -93,7 +95,10 @@ class MPTTGroup(MPTTModel):
 
     def clean(self):
         """
-        Validates model fields.
+        Validates model fields to avoid:
+            - The primary node can exceed the maximum number of children.
+            - Set a descendant as parent node.
+            - Set parent node to itself.
 
         :return:
         """
