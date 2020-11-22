@@ -135,6 +135,4 @@ dmypy.json
 # PyCharm
 .idea/
 
-# Django stuff:
-migrations/
 
