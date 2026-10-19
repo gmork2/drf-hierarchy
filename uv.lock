@@ -67,33 +67,16 @@ name = "drf-hierarchy"
 version = "0.1.0"
 source = { virtual = "." }
 dependencies = [
-    { name = "asgiref" },
     { name = "django" },
-    { name = "django-js-asset" },
     { name = "django-mptt" },
     { name = "djangorestframework" },
-    { name = "pytz" },
-    { name = "sqlparse" },
 ]
 
 [package.metadata]
 requires-dist = [
-    { name = "asgiref", specifier = "==3.8.1" },
-    { name = "django", specifier = "==4.2.30" },
-    { name = "django-js-asset", specifier = "==1.2.2" },
-    { name = "django-mptt", specifier = "==0.12.0" },
-    { name = "djangorestframework", specifier = "==3.15.2" },
-    { name = "pytz", specifier = "==2019.3" },
-    { name = "sqlparse", specifier = "==0.5.4" },
-]
-
-[[package]]
-name = "pytz"
-version = "2019.3"
-source = { registry = "https://pypi.org/simple" }
-sdist = { url = "https://files.pythonhosted.org/packages/82/c3/534ddba230bd4fbbd3b7a3d35f3341d014cca213f369a9940925e7e5f691/pytz-2019.3.tar.gz", hash = "sha256:b02c06db6cf09c12dd25137e563b31700d3b80fcc4ad23abb7a315f2789819be", size = 312286, upload-time = "2019-10-07T03:18:27.399Z" }
-wheels = [
-    { url = "https://files.pythonhosted.org/packages/e7/f9/f0b53f88060247251bf481fa6ea62cd0d25bf1b11a87888e53ce5b7c8ad2/pytz-2019.3-py2.py3-none-any.whl", hash = "sha256:1c557d7d0e871de1f5ccd5833f60fb2550652da6be2693c1e02300743d21500d", size = 509158, upload-time = "2019-10-07T03:18:16.9Z" },
+    { name = "django", specifier = ">=4.2,<5.0" },
+    { name = "django-mptt", specifier = ">=0.12,<0.13" },
+    { name = "djangorestframework", specifier = ">=3.15,<3.16" },
 ]
 
 [[package]]
