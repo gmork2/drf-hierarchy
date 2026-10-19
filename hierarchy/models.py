@@ -2,15 +2,16 @@ from typing import Set
 
 from django.db import models
 from django.contrib.auth.models import Group, Permission
-from django.utils.translation import ugettext_lazy as _
-from django.utils.encoding import force_text
-from django.core.exceptions import ValidationError
+from django.db.models import QuerySet
+from django.utils.translation import gettext_lazy as _
+from django.utils.encoding import force_str
 
 from mptt.models import MPTTModel
 from mptt.fields import TreeForeignKey
 from mptt.managers import TreeManager
 
 from . import settings as local_settings
+from .validators import validate_max_children, validate_not_descendant_of_self, validate_not_parent_of_self
 
 
 def get_sentinel_tree():
@@ -90,50 +91,50 @@ class MPTTGroup(MPTTModel):
     def __str__(self):
         if self.id:
             ancestors = self.get_ancestors()
-            return ' > '.join([force_text(i.group.name) for i in ancestors] + [self.group.name, ])
+            return ' > '.join([force_str(i.group.name) for i in ancestors] + [self.group.name, ])
         return f'id={self.id}'
 
-    def clean(self):
+    def clean(self) -> None:
         """
-        Validates model fields to avoid:
-            - The primary node can exceed the maximum number of children.
-            - Set a descendant as parent node.
-            - Set parent node to itself.
 
-        :return:
+        Returns
+        -------
+
         """
-        if self.parent and self.parent.max_children is not None and \
-                self.parent.max_children <= self.parent.get_children().count():
-            raise ValidationError(_("Parent node already has the maximum number of children "
-                                    "(max_children={})".format(self.parent.max_children)))
-        if self.id:
-            descendant_ids = self.get_descendants().values_list('id', flat=True)
+        validate_max_children(self, self.max_children)
+        validate_not_descendant_of_self(self)
+        validate_not_parent_of_self(self)
 
-            if self.parent and self.parent.id in descendant_ids:
-                raise ValidationError(_("You can't set the parent of the "
-                                        "item to a descendant."))
-            if self.id == getattr(self.parent, 'id', None):
-                raise ValidationError(_("You can't set the parent of the "
-                                        "item to itself."))
+
 
     def save(self, *args, **kwargs):
         """
         Ensure that clean method is always called on save.
 
-        :param args:
-        :param kwargs:
-        :return:
+        Parameters
+        ----------
+        args
+        kwargs
+
+        Returns
+        -------
+
         """
         self.clean()
         super().save(*args, **kwargs)
 
     @property
-    def permissions(self, method: str = local_settings.HIERARCHY_MPTT_METHOD) -> Set[int]:
+    def permissions(self, method: str = local_settings.HIERARCHY_MPTT_METHOD) -> QuerySet[Permission]:
         """
         Property that returns group permissions as queryset.
 
-        :param method:
-        :return:
+        Parameters
+        ----------
+        method: str
+
+        Returns
+        -------
+
         """
         perm_ids = get_permissions(self, method)
         return Permission.objects.filter(id__in=perm_ids)
