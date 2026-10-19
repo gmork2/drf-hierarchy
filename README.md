@@ -9,10 +9,19 @@ in order to provide permissions inheritance.
 Set up the project with uv:
 
 ```shell script
-uv sync
+cp .env.example .env
+uv sync --group dev
 uv run python manage.py migrate
 uv run python manage.py createsuperuser
 uv run python manage.py runserver 0.0.0.0:8000
+```
+
+Useful development commands:
+
+```shell script
+uv run pytest
+uv run ruff check .
+uv run python manage.py check --deploy --settings=sample.settings
 ```
 
 Docker workflow (legacy):

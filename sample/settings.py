@@ -12,29 +12,47 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 
 import os
 
-# Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/
+def _get_env_bool(name, default):
+    value = os.environ.get(name)
+    if value is None:
+        return default
+    return value.strip().lower() in {'1', 'true', 'yes', 'on'}
 
-# SECURITY WARNING: keep the secret key used in production secret!
+
+def _get_env_list(name, default):
+    raw_value = os.environ.get(name)
+    if raw_value is None:
+        return default
+    return [item.strip() for item in raw_value.split(',') if item.strip()]
+
+
+ENV_FILE = os.path.join(BASE_DIR, '.env')
+if os.path.exists(ENV_FILE):
+    with open(ENV_FILE, 'r', encoding='utf-8') as env_file:
+        for line in env_file:
+            line = line.strip()
+            if not line or line.startswith('#') or '=' not in line:
+                continue
+            key, value = line.split('=', 1)
+            os.environ.setdefault(key.strip(), value.strip().strip('"').strip("'"))
+
+
+DEBUG = _get_env_bool('DEBUG', True)
 SECRET_KEY = os.environ.get(
     'SECRET_KEY',
     'dev-secret-key-change-me-in-production',
 )
+ALLOWED_HOSTS = _get_env_list('ALLOWED_HOSTS', ['localhost', '127.0.0.1', '[::1]'])
 
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.environ.get('DEBUG', 'True').strip().lower() in {'1', 'true', 'yes', 'on'}
+SECURE_HSTS_SECONDS = int(os.environ.get('SECURE_HSTS_SECONDS', '0' if DEBUG else '31536000'))
+SECURE_HSTS_PRELOAD = _get_env_bool('SECURE_HSTS_PRELOAD', not DEBUG)
+SECURE_SSL_REDIRECT = _get_env_bool('SECURE_SSL_REDIRECT', not DEBUG)
+SESSION_COOKIE_SECURE = _get_env_bool('SESSION_COOKIE_SECURE', not DEBUG)
+CSRF_COOKIE_SECURE = _get_env_bool('CSRF_COOKIE_SECURE', not DEBUG)
 
-ALLOWED_HOSTS = [
-    host.strip() for host in os.environ.get('ALLOWED_HOSTS', 'localhost,127.0.0.1').split(',')
-    if host.strip()
-]
-
-
-# Application definition
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -84,25 +102,28 @@ TEMPLATES = [
 WSGI_APPLICATION = 'sample.wsgi.application'
 
 
-# Database
-# https://docs.djangoproject.com/en/3.0/ref/settings/#databases
-
-test_db = os.environ.get('DB', 'sqlite')
-if test_db == 'postgres':
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.postgresql',
-            'USER': 'postgres',
-            'NAME': 'hierarchy',
+def _build_databases():
+    db_engine = os.environ.get('DB_ENGINE', 'sqlite').lower()
+    if db_engine == 'postgres':
+        return {
+            'default': {
+                'ENGINE': 'django.db.backends.postgresql',
+                'NAME': os.environ.get('DB_NAME', 'hierarchy'),
+                'USER': os.environ.get('DB_USER', 'postgres'),
+                'PASSWORD': os.environ.get('DB_PASSWORD', ''),
+                'HOST': os.environ.get('DB_HOST', 'localhost'),
+                'PORT': os.environ.get('DB_PORT', '5432'),
+            }
         }
-    }
-else:
-    DATABASES = {
+    return {
         'default': {
             'ENGINE': 'django.db.backends.sqlite3',
-            'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+            'NAME': os.path.join(BASE_DIR, os.environ.get('DB_NAME', 'db.sqlite3')),
         }
     }
+
+
+DATABASES = _build_databases()
 
 
 # Password validation
