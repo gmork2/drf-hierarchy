@@ -24,6 +24,19 @@ uv run ruff check .
 uv run python manage.py check --deploy --settings=sample.settings
 ```
 
+Hierarchy settings:
+
+```python
+# defaults shown
+HIERARCHY_MPTT_METHOD = "get_descendants"
+HIERARCHY_MAX_SERIALIZATION_DEPTH = 5
+HIERARCHY_MAX_CHILDREN = None
+```
+
+`HIERARCHY_MPTT_METHOD` is validated at startup against supported MPTT traversal methods.
+`HIERARCHY_MAX_SERIALIZATION_DEPTH` limits recursive API payload depth to prevent very large responses.
+For production-like checks, set `DEBUG=False` and secure cookie/HSTS variables in `.env`.
+
 Docker workflow (legacy):
 
 ```shell script

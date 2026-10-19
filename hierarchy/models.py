@@ -1,17 +1,19 @@
-from typing import Set
-
-from django.db import models
 from django.contrib.auth.models import Group, Permission
+from django.db import models
 from django.db.models import QuerySet
-from django.utils.translation import gettext_lazy as _
 from django.utils.encoding import force_str
-
-from mptt.models import MPTTModel
+from django.utils.translation import gettext_lazy as _
 from mptt.fields import TreeForeignKey
 from mptt.managers import TreeManager
+from mptt.models import MPTTModel
 
 from . import settings as local_settings
-from .validators import validate_max_children, validate_not_descendant_of_self, validate_not_parent_of_self
+from .services import get_permission_ids_for_node
+from .validators import (
+    validate_max_children,
+    validate_not_descendant_of_self,
+    validate_not_parent_of_self,
+)
 
 
 def get_sentinel_tree():
@@ -21,27 +23,6 @@ def get_sentinel_tree():
     :return:
     """
     return Group.objects.first()
-
-
-def get_permissions(
-        root: 'MPTTGroup',
-        method: str = local_settings.HIERARCHY_MPTT_METHOD,
-        **kwargs) -> Set[int]:
-    """
-    Verify the permissions according to a tree path method.
-
-    :param root:
-    :param method:
-    :param kwargs:
-    :return:
-    """
-    perm_ids = set(root.group.permissions.values_list('id', flat=True))
-
-    for node in getattr(root, method)(**kwargs):
-        query = node.group.permissions.filter(group__hierarchy__inheritable=True)
-        perm_ids.update(query.values_list('id', flat=True))
-
-    return perm_ids
 
 
 class MPTTGroup(MPTTModel):
@@ -105,8 +86,6 @@ class MPTTGroup(MPTTModel):
         validate_not_descendant_of_self(self)
         validate_not_parent_of_self(self)
 
-
-
     def save(self, *args, **kwargs):
         """
         Ensure that clean method is always called on save.
@@ -123,10 +102,9 @@ class MPTTGroup(MPTTModel):
         self.clean()
         super().save(*args, **kwargs)
 
-    @property
-    def permissions(self, method: str = local_settings.HIERARCHY_MPTT_METHOD) -> QuerySet[Permission]:
+    def get_permissions_queryset(self, method: str = local_settings.HIERARCHY_MPTT_METHOD, **kwargs) -> QuerySet[Permission]:
         """
-        Property that returns group permissions as queryset.
+        Returns group permissions as queryset.
 
         Parameters
         ----------
@@ -136,8 +114,12 @@ class MPTTGroup(MPTTModel):
         -------
 
         """
-        perm_ids = get_permissions(self, method)
-        return Permission.objects.filter(id__in=perm_ids)
+        permission_ids = get_permission_ids_for_node(self, method=method, **kwargs)
+        return Permission.objects.filter(id__in=permission_ids)
+
+    @property
+    def permissions(self) -> QuerySet[Permission]:
+        return self.get_permissions_queryset()
 
     class Meta:
         unique_together = ('parent', 'group')
