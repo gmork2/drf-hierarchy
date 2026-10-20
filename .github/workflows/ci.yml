@@ -25,6 +25,9 @@ jobs:
       - name: Install dependencies
         run: uv sync --group dev
 
+      - name: Validate SemVer project version
+        run: uv run python scripts/check_semver.py
+
       - name: Lint
         run: uv run ruff check .
 

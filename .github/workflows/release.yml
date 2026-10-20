@@ -25,6 +25,9 @@ jobs:
       - name: Set up uv
         uses: astral-sh/setup-uv@v3
 
+      - name: Validate SemVer tag and package version
+        run: uv run python scripts/check_semver.py --check-tag-match --tag "${{ github.event.release.tag_name }}"
+
       - name: Build distributions
         run: uv build
 

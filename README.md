@@ -38,6 +38,26 @@ Validated test matrix in this repository:
 - **CI** (`.github/workflows/ci.yml`): lint, Django checks and tests on push/PR, plus compatibility matrix across Django 4.2/5.x/6.x.
 - **CD** (`.github/workflows/release.yml`): on GitHub Release publication, builds the package and publishes to PyPI.
 
+## Versioning (SemVer)
+
+This project follows **Semantic Versioning** using `X.Y.Z` in `pyproject.toml` and tags in the form `vX.Y.Z`.
+
+- `MAJOR` (`X`): backward-incompatible API/behavior changes.
+- `MINOR` (`Y`): backward-compatible features.
+- `PATCH` (`Z`): backward-compatible fixes.
+
+Automated checks:
+
+- CI validates that `project.version` uses SemVer core format.
+- Release workflow validates that release tag `vX.Y.Z` matches `project.version`.
+
+Recommended release flow:
+
+1. Update `project.version` in `pyproject.toml`.
+2. Merge to `main`/`master`.
+3. Create tag `vX.Y.Z` on that commit.
+4. Publish GitHub Release for that tag.
+
 ## Installation
 
 ### Recommended (uv)
