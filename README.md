@@ -3,6 +3,11 @@
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 [![CI](https://github.com/gmork2/drf-hierarchy/actions/workflows/ci.yml/badge.svg)](https://github.com/gmork2/drf-hierarchy/actions/workflows/ci.yml)
 [![Release](https://github.com/gmork2/drf-hierarchy/actions/workflows/release.yml/badge.svg)](https://github.com/gmork2/drf-hierarchy/actions/workflows/release.yml)
+[![PyPI version](https://img.shields.io/pypi/v/drf-hierarchy)](https://pypi.org/project/drf-hierarchy/)
+[![Python](https://img.shields.io/badge/Python-3.10%20%7C%203.11%20%7C%203.12-3776AB)](https://www.python.org/)
+[![Django](https://img.shields.io/badge/Django-4.2%20%7C%205.x%20%7C%206.x-0C4B33)](https://www.djangoproject.com/)
+[![DRF](https://img.shields.io/badge/DRF-3.15%2B-red)](https://www.django-rest-framework.org/)
+[![SemVer](https://img.shields.io/badge/SemVer-2.0.0-informational)](https://semver.org/)
 
 `drf-hierarchy` is a reusable Django app that adds **hierarchical group permissions**
 on top of Django `auth.Group` using **MPTT** (tree structure).
@@ -128,6 +133,41 @@ Quick health checks:
 uv run python manage.py check --settings=sample.settings
 uv run pytest -q
 ```
+
+### Quickstart: minimal hierarchy example
+
+If you want to see permission inheritance quickly, this reduced example mirrors the shape of the Linux-like fixture:
+
+```mermaid
+flowchart TD
+  root["/"] --> etc["etc"]
+  etc --> nginx["nginx"]
+  root --> usr["usr"]
+```
+
+Load the full sample fixture (optional):
+
+```bash
+SAMPLE_LOAD_FIXTURE=true uv run python scripts/bootstrap_sample.py
+```
+
+Or create a minimal tree manually:
+
+```bash
+uv run python manage.py shell --settings=sample.settings
+```
+
+```python
+from django.contrib.auth.models import Group
+from hierarchy.models import MPTTGroup
+
+root = MPTTGroup.objects.create(group=Group.objects.create(name="/"))
+etc = MPTTGroup.objects.create(group=Group.objects.create(name="etc"), parent=root)
+MPTTGroup.objects.create(group=Group.objects.create(name="nginx"), parent=etc)
+MPTTGroup.objects.create(group=Group.objects.create(name="usr"), parent=root)
+```
+
+The full fixture is available at `sample/fixtures/linux_hierarchy.json`.
 
 ## Integrating into an existing Django project
 
