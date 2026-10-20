@@ -56,6 +56,10 @@ jobs:
             django_label: "Django 6.x"
             django_spec: "Django>=6.0,<7.0"
             drf_spec: "djangorestframework>=3.16,<3.17"
+          - python: "3.13"
+            django_label: "Django 6.x"
+            django_spec: "Django>=6.0,<7.0"
+            drf_spec: "djangorestframework>=3.16,<3.17"
 
     steps:
       - name: Checkout
