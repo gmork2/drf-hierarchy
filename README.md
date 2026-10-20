@@ -1,7 +1,8 @@
 # drf-hierarchy
 
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
-[![Build Status](https://travis-ci.com/gmork2/drf-hierarchy.svg?branch=master)](https://travis-ci.com/gmork2/drf-hierarchy)
+[![CI](https://github.com/gmork2/drf-hierarchy/actions/workflows/ci.yml/badge.svg)](https://github.com/gmork2/drf-hierarchy/actions/workflows/ci.yml)
+[![Release](https://github.com/gmork2/drf-hierarchy/actions/workflows/release.yml/badge.svg)](https://github.com/gmork2/drf-hierarchy/actions/workflows/release.yml)
 
 `drf-hierarchy` is a reusable Django app that adds **hierarchical group permissions**
 on top of Django `auth.Group` using **MPTT** (tree structure).
@@ -31,6 +32,11 @@ Validated test matrix in this repository:
 - Django 4.2.x
 - Django 5.x
 - Django 6.x
+
+## CI/CD
+
+- **CI** (`.github/workflows/ci.yml`): lint, Django checks and tests on push/PR, plus compatibility matrix across Django 4.2/5.x/6.x.
+- **CD** (`.github/workflows/release.yml`): on GitHub Release publication, builds the package and publishes to PyPI.
 
 ## Installation
 

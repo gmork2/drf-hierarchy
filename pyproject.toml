@@ -24,6 +24,9 @@ build-backend = "hatchling.build"
 [tool.uv]
 package = false
 
+[tool.hatch.build.targets.wheel]
+packages = ["hierarchy"]
+
 [tool.pytest.ini_options]
 DJANGO_SETTINGS_MODULE = "sample.settings"
 python_files = ["tests.py", "test_*.py"]
