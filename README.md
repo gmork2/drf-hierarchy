@@ -106,6 +106,16 @@ Credentials are read from environment variables in `.env`:
 - `DJANGO_SUPERUSER_EMAIL`
 - `DJANGO_SUPERUSER_PASSWORD`
 
+Optional sample data fixture:
+
+- Set `SAMPLE_LOAD_FIXTURE=true` in `.env`, then run:
+
+```bash
+uv run python scripts/bootstrap_sample.py
+```
+
+This loads `sample/fixtures/linux_hierarchy.json` (Linux-like hierarchy) only when no hierarchy nodes exist.
+
 ### Verify it is working
 
 - Admin: `http://127.0.0.1:8000/admin/`

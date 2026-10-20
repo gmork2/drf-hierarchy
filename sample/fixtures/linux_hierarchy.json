@@ -1,0 +1,146 @@
+[
+  {
+    "model": "auth.group",
+    "pk": 1001,
+    "fields": {
+      "name": "/",
+      "permissions": []
+    }
+  },
+  {
+    "model": "auth.group",
+    "pk": 1002,
+    "fields": {
+      "name": "etc",
+      "permissions": []
+    }
+  },
+  {
+    "model": "auth.group",
+    "pk": 1003,
+    "fields": {
+      "name": "nginx",
+      "permissions": []
+    }
+  },
+  {
+    "model": "auth.group",
+    "pk": 1004,
+    "fields": {
+      "name": "usr",
+      "permissions": []
+    }
+  },
+  {
+    "model": "auth.group",
+    "pk": 1005,
+    "fields": {
+      "name": "local",
+      "permissions": []
+    }
+  },
+  {
+    "model": "auth.group",
+    "pk": 1006,
+    "fields": {
+      "name": "bin",
+      "permissions": []
+    }
+  },
+  {
+    "model": "hierarchy.mpttgroup",
+    "pk": 2001,
+    "fields": {
+      "parent": null,
+      "group": 1001,
+      "propagate": true,
+      "inheritable": true,
+      "max_children": null,
+      "active": true,
+      "lft": 1,
+      "rght": 12,
+      "tree_id": 1,
+      "level": 0
+    }
+  },
+  {
+    "model": "hierarchy.mpttgroup",
+    "pk": 2002,
+    "fields": {
+      "parent": 2001,
+      "group": 1002,
+      "propagate": true,
+      "inheritable": true,
+      "max_children": null,
+      "active": true,
+      "lft": 2,
+      "rght": 5,
+      "tree_id": 1,
+      "level": 1
+    }
+  },
+  {
+    "model": "hierarchy.mpttgroup",
+    "pk": 2003,
+    "fields": {
+      "parent": 2002,
+      "group": 1003,
+      "propagate": true,
+      "inheritable": true,
+      "max_children": null,
+      "active": true,
+      "lft": 3,
+      "rght": 4,
+      "tree_id": 1,
+      "level": 2
+    }
+  },
+  {
+    "model": "hierarchy.mpttgroup",
+    "pk": 2004,
+    "fields": {
+      "parent": 2001,
+      "group": 1004,
+      "propagate": true,
+      "inheritable": true,
+      "max_children": null,
+      "active": true,
+      "lft": 6,
+      "rght": 11,
+      "tree_id": 1,
+      "level": 1
+    }
+  },
+  {
+    "model": "hierarchy.mpttgroup",
+    "pk": 2005,
+    "fields": {
+      "parent": 2004,
+      "group": 1005,
+      "propagate": true,
+      "inheritable": true,
+      "max_children": null,
+      "active": true,
+      "lft": 7,
+      "rght": 8,
+      "tree_id": 1,
+      "level": 2
+    }
+  },
+  {
+    "model": "hierarchy.mpttgroup",
+    "pk": 2006,
+    "fields": {
+      "parent": 2004,
+      "group": 1006,
+      "propagate": true,
+      "inheritable": true,
+      "max_children": null,
+      "active": true,
+      "lft": 9,
+      "rght": 10,
+      "tree_id": 1,
+      "level": 2
+    }
+  }
+]

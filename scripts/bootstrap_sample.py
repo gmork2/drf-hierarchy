@@ -14,6 +14,13 @@ def _env(name: str, default: str) -> str:
     return value
 
 
+def _env_bool(name: str, default: bool = False) -> bool:
+    value = os.environ.get(name)
+    if value is None:
+        return default
+    return value.strip().lower() in {"1", "true", "yes", "on"}
+
+
 def main() -> None:
     project_root = Path(__file__).resolve().parents[1]
     sys.path.insert(0, str(project_root))
@@ -35,14 +42,26 @@ def main() -> None:
             user.is_staff = True
             user.save(update_fields=["is_superuser", "is_staff"])
         print(f"Superuser already exists: {username}")
+    else:
+        user_model.objects.create_superuser(
+            username=username,
+            email=email,
+            password=password,
+        )
+        print(f"Superuser created: {username}")
+
+    if not _env_bool("SAMPLE_LOAD_FIXTURE", False):
         return
 
-    user_model.objects.create_superuser(
-        username=username,
-        email=email,
-        password=password,
-    )
-    print(f"Superuser created: {username}")
+    from hierarchy.models import MPTTGroup
+
+    if MPTTGroup.objects.exists():
+        print("Skipping fixture load: hierarchy data already exists.")
+        return
+
+    fixture_path = project_root / "sample" / "fixtures" / "linux_hierarchy.json"
+    call_command("loaddata", str(fixture_path))
+    print("Loaded sample fixture: sample/fixtures/linux_hierarchy.json")
 
 
 if __name__ == "__main__":
