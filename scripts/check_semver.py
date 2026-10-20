@@ -2,9 +2,9 @@ import argparse
 import os
 import re
 import sys
-import tomllib
 from pathlib import Path
 
+import tomllib
 
 SEMVER_CORE_RE = re.compile(r"^(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)$")
 

@@ -1,8 +1,7 @@
-from django.contrib import admin
 from django import forms
-from django.utils.translation import gettext as _
+from django.contrib import admin
 from django.utils.html import format_html
-
+from django.utils.translation import gettext as _
 from mptt.admin import DraggableMPTTAdmin
 
 from .models import MPTTGroup

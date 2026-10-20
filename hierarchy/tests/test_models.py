@@ -1,8 +1,6 @@
-from unittest import skip
-
+from django.contrib.auth.models import Group
 from django.core.exceptions import ValidationError
 from django.test import TestCase
-from django.contrib.auth.models import Group, Permission
 
 from hierarchy.models import MPTTGroup
 from hierarchy.settings import MPTT_METHODS_LIST
@@ -87,4 +85,3 @@ class MPTTGroupTestCase(TestCase):
         node.parent = node
 
         self.assertRaises(ValidationError, node.clean)
-

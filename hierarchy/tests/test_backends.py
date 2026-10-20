@@ -1,7 +1,5 @@
-from unittest import skip
-
-from django.test import TestCase, override_settings
 from django.contrib.auth.models import Group, Permission, User
+from django.test import TestCase, override_settings
 
 from hierarchy.models import MPTTGroup
 
