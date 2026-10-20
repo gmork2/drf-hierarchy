@@ -5,9 +5,9 @@ description = "Django REST framework app for hierarchical group permission inher
 readme = "README.md"
 requires-python = ">=3.10,<3.13"
 dependencies = [
-    "Django>=4.2,<5.0",
-    "django-mptt>=0.12,<0.13",
-    "djangorestframework>=3.15,<3.16",
+    "Django>=4.2,<7.0",
+    "django-mptt>=0.16,<1.0",
+    "djangorestframework>=3.15,<3.17",
 ]
 
 [dependency-groups]

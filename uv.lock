@@ -48,15 +48,14 @@ wheels = [
 
 [[package]]
 name = "django-mptt"
-version = "0.12.0"
+version = "0.19.1"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
-    { name = "django" },
     { name = "django-js-asset" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/eb/30/598931a8cffe4c1e77d8482500dfe6f196448518eee1e798ec89109c5f7b/django-mptt-0.12.0.tar.gz", hash = "sha256:8ae6c3821127b529bb2f938de27bf0771b1bcbe9dbccdfba33986af78611f13a", size = 103513, upload-time = "2021-03-04T07:28:27.578Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/16/f7/b51a0e2766a19e6331dd671f6f9955c7b84d3a11d32fda646ab465db0b39/django_mptt-0.19.1.tar.gz", hash = "sha256:fae99f5f4f6037097e0c4692ff1495a7621be6cdca5100b0a77ae97621279867", size = 72922, upload-time = "2026-10-16T13:28:48.342Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/dd/0e/a57dff8797aac2c511e086e0acde4f78b300978459a9e22097e3962536b0/django_mptt-0.12.0-py2.py3-none-any.whl", hash = "sha256:63b421a054bceb7406582e2be876a80b3848a5106765baea1003696348ffd628", size = 111157, upload-time = "2021-03-04T07:28:25.8Z" },
+    { url = "https://files.pythonhosted.org/packages/13/02/fc55e34669f10a31a6d70884aeee9e1e3235b952b83542a5075e3b68b503/django_mptt-0.19.1-py3-none-any.whl", hash = "sha256:944c23704fdf2a211166519874eaf934d2dd0cda895c265fa07753df093cd7b4", size = 121578, upload-time = "2026-10-16T13:28:47.055Z" },
 ]
 
 [[package]]
@@ -90,9 +89,9 @@ dev = [
 
 [package.metadata]
 requires-dist = [
-    { name = "django", specifier = ">=4.2,<5.0" },
-    { name = "django-mptt", specifier = ">=0.12,<0.13" },
-    { name = "djangorestframework", specifier = ">=3.15,<3.16" },
+    { name = "django", specifier = ">=4.2,<7.0" },
+    { name = "django-mptt", specifier = ">=0.16,<1.0" },
+    { name = "djangorestframework", specifier = ">=3.15,<3.17" },
 ]
 
 [package.metadata.requires-dev]
