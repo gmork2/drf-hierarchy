@@ -71,15 +71,52 @@ For local development of this repository:
 ```bash
 cp .env.example .env
 uv sync --group dev
-uv run python manage.py migrate
-uv run python manage.py createsuperuser
-uv run python manage.py runserver 0.0.0.0:8000
+uv run python scripts/bootstrap_sample.py
+uv run python manage.py runserver 0.0.0.0:8000 --settings=sample.settings
 ```
 
 ### Alternative (pip)
 
 ```bash
 pip install drf-hierarchy
+```
+
+## Running the sample project
+
+This repository includes `sample/`, a minimal Django project used to validate and demonstrate integration of the `hierarchy` app. It is intended for local testing and examples (not production).
+
+### Start `sample` locally
+
+```bash
+cp .env.example .env
+uv sync --group dev
+uv run python scripts/bootstrap_sample.py
+uv run python manage.py runserver 0.0.0.0:8000 --settings=sample.settings
+```
+
+`bootstrap_sample.py` is non-interactive and idempotent:
+
+- Runs migrations.
+- Creates a superuser if missing.
+- Reuses existing superuser if already present.
+
+Credentials are read from environment variables in `.env`:
+
+- `DJANGO_SUPERUSER_USERNAME`
+- `DJANGO_SUPERUSER_EMAIL`
+- `DJANGO_SUPERUSER_PASSWORD`
+
+### Verify it is working
+
+- Admin: `http://127.0.0.1:8000/admin/`
+- API root: `http://127.0.0.1:8000/`
+- Hierarchy endpoint: `http://127.0.0.1:8000/hierarchy/`
+
+Quick health checks:
+
+```bash
+uv run python manage.py check --settings=sample.settings
+uv run pytest -q
 ```
 
 ## Integrating into an existing Django project
