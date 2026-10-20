@@ -4,7 +4,7 @@
 [![CI](https://github.com/gmork2/drf-hierarchy/actions/workflows/ci.yml/badge.svg)](https://github.com/gmork2/drf-hierarchy/actions/workflows/ci.yml)
 [![Release](https://github.com/gmork2/drf-hierarchy/actions/workflows/release.yml/badge.svg)](https://github.com/gmork2/drf-hierarchy/actions/workflows/release.yml)
 [![PyPI version](https://img.shields.io/pypi/v/drf-hierarchy)](https://pypi.org/project/drf-hierarchy/)
-[![Python](https://img.shields.io/badge/Python-3.10%20%7C%203.11%20%7C%203.12%20%7C%203.13-3776AB)](https://www.python.org/)
+[![Python](https://img.shields.io/badge/Python-3.10%20%7C%203.11%20%7C%203.12%20%7C%203.13%20%7C%203.14-3776AB)](https://www.python.org/)
 [![Django](https://img.shields.io/badge/Django-4.2%20%7C%205.x%20%7C%206.x-0C4B33)](https://www.djangoproject.com/)
 [![DRF](https://img.shields.io/badge/DRF-3.15%2B-red)](https://www.django-rest-framework.org/)
 [![SemVer](https://img.shields.io/badge/SemVer-2.0.0-informational)](https://semver.org/)
@@ -27,7 +27,7 @@ By default, Django groups are flat. This app provides:
 
 ## Compatibility
 
-- Python: `>=3.10,<3.14`
+- Python: `>=3.10,<3.15`
 - Django: `>=4.2,<7.0`
 - djangorestframework: `>=3.15,<3.17`
 - django-mptt: `>=0.16,<1.0`
