@@ -1,0 +1,77 @@
+name: CI
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+
+jobs:
+  quality:
+    name: Quality checks (default stack)
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Set up uv
+        uses: astral-sh/setup-uv@v3
+
+      - name: Install dependencies
+        run: uv sync --group dev
+
+      - name: Lint
+        run: uv run ruff check .
+
+      - name: Django checks
+        run: uv run python manage.py check --settings=sample.settings
+
+      - name: Test
+        run: uv run pytest -q
+
+  compatibility:
+    name: Compatibility (Py${{ matrix.python }} / ${{ matrix.django_label }})
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - python: "3.10"
+            django_label: "Django 4.2"
+            django_spec: "Django>=4.2,<5.0"
+            drf_spec: "djangorestframework>=3.15,<3.16"
+          - python: "3.11"
+            django_label: "Django 5.x"
+            django_spec: "Django>=5.0,<6.0"
+            drf_spec: "djangorestframework>=3.15,<3.17"
+          - python: "3.12"
+            django_label: "Django 6.x"
+            django_spec: "Django>=6.0,<7.0"
+            drf_spec: "djangorestframework>=3.16,<3.17"
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python }}
+
+      - name: Set up uv
+        uses: astral-sh/setup-uv@v3
+
+      - name: Install dependencies
+        run: uv sync --group dev
+
+      - name: Run tests against matrix dependencies
+        run: |
+          uv run \
+            --with "${{ matrix.django_spec }}" \
+            --with "${{ matrix.drf_spec }}" \
+            pytest -q
